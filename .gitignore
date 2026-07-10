@@ -1,0 +1,19 @@
+# Dataset — large, downloaded separately (see SPEC.md), not tracked in git
+data/
+optiver-realized-volatility-prediction/
+optiver-realized-volatility-prediction.zip
+
+# Virtual environment — reproducible from requirements.txt
+.venv/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
+
+# Jupyter autosave folder
+.ipynb_checkpoints/
+
+# Local-only working notes, not published to the repo
+CLAUDE.md
+SPEC.md
+PROGRESS.md

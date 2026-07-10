@@ -17,3 +17,6 @@ __pycache__/
 CLAUDE.md
 SPEC.md
 PROGRESS.md
+
+# Claude Code local tool folder — not project work
+.claude/

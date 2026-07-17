@@ -1,4 +1,4 @@
-# Optiver — Realized Volatility Prediction
+# Optiver Realized Volatility Prediction
 
 Predicting a stock's **next-10-minute realized volatility** from its order-book
 data, recreating [Optiver's Kaggle competition](https://www.kaggle.com/competitions/optiver-realized-volatility-prediction).
@@ -6,9 +6,8 @@ The interesting part is *not* that a model works — it's that a dead-simple
 baseline is already hard to beat, because **volatility clusters in time**. The
 real work is engineering order-book features that add signal beyond it.
 
-> Built as a learning project: careful, honest evaluation over leaderboard chasing.
-> All numbers below are on a **4-stock subset** (`stock_id` 0–3), the development
-> subset used throughout — enough to prove the pipeline is correct and honest.
+> Built as a learning project.
+> All numbers below are on a **4-stock subset** (`stock_id` 0–3), the development subset used throughout enough to prove the pipeline is correct and honest.
 
 ---
 
@@ -28,7 +27,7 @@ the model by ~24%.
 
 ## Why the baseline is strong: volatility clusters
 
-Volatility does not jump around randomly — turbulent periods are followed by
+Volatility does not jump around randomly. Turbulent periods are followed by
 turbulent periods, and calm by calm. So "assume the next 10 minutes look like
 the last 10 minutes" is already a decent prediction. Beating it is the whole
 challenge.
@@ -48,7 +47,7 @@ above the line); the tuned LightGBM hugs the diagonal far more tightly.
 
 ---
 
-## What helped, and what didn't (the honest part)
+## What helped, and what didn't
 
 ![Correlation of each feature with the target](plots/feature_correlation.png)
 
@@ -61,7 +60,7 @@ above the line); the tuned LightGBM hugs the diagonal far more tightly.
 - **`size_imbalance_mean` (−0.04)** and the derived **`imbalance_intensity`
   (0.03)** barely move with the target on these four stocks. `imbalance_intensity`
   was a reasoned attempt (a V-shape: imbalance in *either* direction might signal
-  pressure) but it did not pay off here. Kept for honesty, not because it helped.
+  pressure) but it did not pay off here. 
 
 **The two things that actually mattered were not the fancy features or the
 tuning:**
@@ -76,7 +75,7 @@ tuning:**
 
 Hyperparameter tuning (`RandomizedSearchCV` over `learning_rate` and
 `num_leaves`, plus early stopping to pick the tree count) only bought the last
-**~2%** (0.250 → 0.245). That ordering — features and loss first, tuning last —
+**~2%** (0.250 -> 0.245). That ordering, features and loss first, tuning last,
 is the real takeaway.
 
 ---
@@ -117,10 +116,10 @@ python make_plots.py
 
 ---
 
-## Scope and honesty
+## Scope
 
-- Numbers are on **4 stocks**, not the full ~112-stock dataset — the point was a
+- Numbers are on **4 stocks**, not the full ~112-stock dataset. The point was a
   correct, well-evaluated pipeline, not a competition-grade score. Scaling to all
   stocks and adding **trade-data features** (trade count/volume) are the obvious
   next steps.
-- No trades, no real money — this is a prediction exercise, not a trading system.
+- No trades, no real money. This is a prediction exercise, not a trading system.

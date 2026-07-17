@@ -1,2 +1,4 @@
 pandas
 pyarrow
+scikit-learn
+lightgbm

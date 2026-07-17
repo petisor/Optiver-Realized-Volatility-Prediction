@@ -123,3 +123,39 @@ python make_plots.py
   stocks and adding **trade-data features** (trade count/volume) are the obvious
   next steps.
 - No trades, no real money. This is a prediction exercise, not a trading system.
+
+---
+
+## Update: trade features & scaling (new notebook)
+
+Two of those "next steps" are now done in a separate notebook,
+`explore_trade_features.ipynb` (the original `explore_data.ipynb` is left
+untouched):
+
+- **Trade-data features.** Beyond the order book (resting buy/sell *intentions*),
+  we add features from `trade_train.parquet` the trades that **actually
+  executed**: `trade_count`, `total_volume`, `mean_trade_size`,
+  `trade_order_count`, and `trade_vol` (realized volatility of the actual trade
+  prices).
+- **Scaling.** From the original 4 stocks up to **20**.
+
+Scored under the *same* honest setup (tuned LightGBM, `GroupKFold` split by
+`time_id`, `1/target²` weighting):
+
+| Model (20 stocks) | RMSPE |
+|---|---|
+| Naive baseline | ~0.338 |
+| Book features only | ~0.250 |
+| Book **+ trade** features | **~0.244** |
+
+Adding trade features lowers error a further **~2.4%**. Almost all of that comes
+from **`trade_vol`** (correlation ~0.81 with the target) the volatility of the
+prices trades *actually* happened at is a genuinely new signal beyond the
+order-book WAP volatility; the volume/count features add little. Scaling also held
+up: the baseline (~0.338) and book-only model (~0.250) match the 4-stock numbers,
+so nothing broke or leaked at 5× the data.
+
+**Takeaway:** trade features help, but modestly,so the same lesson as
+hyperparameter tuning. Order-book realized volatility stays the dominant signal;
+trades refine it rather than replace it. Going to all 112 stocks is a one-line
+change in the notebook's setup cell.
